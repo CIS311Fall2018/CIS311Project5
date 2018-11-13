@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>CIS 3110 Project 4</title>
+</head>
+
+<body>
+    <div class = "blockquote text-center">
+        <h1 class="badge badge-info">Weiyang Huang's Project 4 Index Page</h1>
+    </div>
+    <script>
+        var images = ["owl1.jpg", "owl2.jpg", "owl3.jpg", "owl4.jpg", "owl5.jpg", "owl6.jpg"];
+        var titles = ["Cool Owl", "Cooler Owl", "The Coolest Owl", "Cute Owl", "Cuter Owl", "The Cutest Owl"];
+        var description = [
+            "This owl is cool. It looks nice. I want to pet one! For sure!",
+            "This owl is cooler than the first one. It looks nice. I want to pet this one now!",
+            "This owl is the coolest. It looks too cool. There is no way to pet this one!",
+            "This owl is cute. It looks amazing. I want to pet one!",
+            "This owl is cuter than the one above. It looks nice. I want to pet this one too!",
+            "This owl is the cutest. It is really cute. I want to pet as many as I can get!"
+        ];
+
+        var url;
+        var cookie;
+        var clear;
+        var yeah = "https://s3-us-west-2.amazonaws.com/weiyangbucket311fall2018/project4/like.jpg";
+        var container = document.createElement("div");
+        container.setAttribute("class", "container");
+
+        var row = document.createElement("div");
+        row.setAttribute("class", "row");
+
+        for (var i = 0; i < images.length; i++) {
+            
+            url = "https://s3-us-west-2.amazonaws.com/weiyangbucket311fall2018/project4/" + images[i];
+            urlOfDetailPage = "detailPage.html?" + "img=" + url + "&title=" + titles[i] + "&description=" + description[i] + "&cookie=" + "like"+i;
+
+            var imgDiv = document.createElement("div");
+            imgDiv.setAttribute("class", "col-sm");
+
+            var card = document.createElement("div");
+            card.setAttribute("class","card");
+
+            var imgInDiv = document.createElement("img");
+            imgInDiv.setAttribute("class", "rounded mx-auto d-block");
+            imgInDiv.setAttribute("src", url);
+
+            var link = document.createElement("a");
+            link.setAttribute("href", urlOfDetailPage);
+
+            var header = document.createElement("h2");
+            header.setAttribute("class", "blockquote text-center");
+            header.innerHTML = titles[i];
+
+            var p = document.createElement("p");
+            p.setAttribute("class", "description");
+            p.setAttribute("class","blockquote text-center");
+            p.innerHTML = description[i];
+
+            var like = document.createElement("button");
+            cookie = "checkCookie(" + i + ")";
+            like.setAttribute("id", "like"+i);
+            like.setAttribute("onclick", cookie);
+            like.setAttribute("class","btn btn-outline-success");
+
+            like.innerHTML = "Like"
+
+            var unlike = document.createElement("button");
+            clear = "clearCookie(" + i + ")";
+            unlike.setAttribute("id", "unlike"+i);
+            unlike.setAttribute("onclick", clear);
+            unlike.setAttribute("class","btn btn-outline-danger");
+            unlike.innerHTML = "Unlike";
+
+            link.appendChild(imgInDiv);
+            imgDiv.appendChild(header);
+
+            var check = checkCookieForLike(i);
+            if(check == "y"){
+                var likeIcon = document.createElement("img");
+                likeIcon.setAttribute("class", "rounded mx-auto d-block");
+                likeIcon.setAttribute("src", yeah);
+                header.appendChild(likeIcon);
+              
+            }
+            
+            card.appendChild(header);
+            card.appendChild(link);
+            card.appendChild(p);
+            card.appendChild(like);
+            card.appendChild(unlike);
+            
+            imgDiv.appendChild(card);
+            row.appendChild(imgDiv);
+
+        }
+        container.appendChild(row);
+        document.body.appendChild(container);
+
+        function setCookie(cookieN, exp) {
+            var d = new Date();
+            var v = "like";
+            d.setTime(d.getTime() + (exp * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toGMTString();
+            var newC = cookieN + "=" + v + ";" + expires + ";path=/;";
+            document.cookie = newC;
+            window.location.reload();
+            return "";
+        }
+
+        function clearCookie(cookieN) {
+            var deleteC = "like" + cookieN;
+            setCookie(deleteC,-1);
+            window.location.reload();
+            return "";
+        }
+
+        function getCookie(cookie) {
+            var name = cookie + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1);
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function checkCookie(cookieN){
+            var likeImg = "like" + cookieN;
+            var ck = getCookie(likeImg);
+            if(ck != ""){
+                alert("You have liked this img already");
+               
+            }else{
+                setCookie(likeImg,30);
+
+            }
+        }
+
+        function checkCookieForLike(cookieN){
+            var likeImg = "like" + cookieN;
+            var ck = getCookie(likeImg);
+            if(ck != ""){
+               return "y";
+               
+            }else{
+                return "n"
+            }
+        }
+    </script>
+</body>
+
+</html>
