@@ -11,7 +11,7 @@
         $(function () {
             $("#u").click(function () {
                 //alert("testing this");
-                var h = "1.html";
+                var h = "phrase5.html";
                 console.log(h);
                 window.location.href = h;
             });
@@ -40,7 +40,7 @@
             var likeimg = document.createElement("img");
             likeurl = "https://s3.us-east-2.amazonaws.com/cppfall2018311/project3/like.jpg";
             likeimg.setAttribute("src", likeurl);
-            likeimg.setAttribute("class", "likeimg");
+            likeimg.setAttribute("id", "likeimg");
 
             //document.getElementById("page1").innerHTML = "Image url is: " + x.search.img;  //display url
             // document.getElementById("title").innerHTML = "Title: This is " + x.search.title;  //display title
@@ -56,7 +56,7 @@
 
 
             y.setAttribute("src", x.search.img);  // set img attri     source
-            y.setAttribute("class", "pctImg");  //set img attri  class
+            y.setAttribute("id", "pctImg");  //set img attri  class
 
             checklike(x.search.imgid);
 
